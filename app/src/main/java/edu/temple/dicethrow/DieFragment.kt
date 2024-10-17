@@ -8,20 +8,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import kotlin.random.Random
 
-class DieFragment : Fragment() {
+const val  DIESIDE= "sidenumber"
 
-    val DIESIDE = "sidenumber"
+class DieFragment : Fragment() {
 
     lateinit var dieTextView: TextView
 
-    var dieSides: Int = 6
-
+    var dieside : Int = 6
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            it.getInt(DIESIDE).run {
-                dieSides = this
-            }
+            it.getInt(DIESIDE).run {dieside}
         }
     }
 
@@ -38,11 +35,21 @@ class DieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         throwDie()
-        view.setOnClickListener{
+        view.setOnClickListener {
             throwDie()
         }
     }
     fun throwDie() {
-        dieTextView.text = ((Random.nextInt(dieSides))+1).toString()
+        dieTextView.text = ((Random.nextInt(dieside))+1).toString()
+    }
+
+    companion object{//our refernce to get a static version
+    fun newInstance (size: Int) : DieFragment{
+        val fragment= DieFragment()
+        val bundle= Bundle()
+        bundle.putInt(DIESIDE,size)
+        fragment.arguments=bundle
+        return fragment
+    }
     }
 }
